@@ -1,6 +1,5 @@
 import network,socket,os,select,machine,time
 
-@micropython.native
 def loop(port,baudrate=9600,debug=False,buflen=32,rxbuf=32):
     try:
         uart = machine.UART(0,rxbuf=rxbuf)
@@ -46,10 +45,3 @@ def loop(port,baudrate=9600,debug=False,buflen=32,rxbuf=32):
         os.dupterm(uart, 1) 
         s.close()
 
-for i in range(5,0,-1):
-    print('Disabling REPL ({} secs)\r'.format(i),end='')
-    time.sleep(1)
-
-os.dupterm(None, 1) # disable REPL on UART(0)
-
-loop(port=1234,baudrate=19200)

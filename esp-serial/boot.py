@@ -1,4 +1,4 @@
-import esp,gc,json,network,webrepl
+import esp,gc,json,network
 
 def disable_ap():
     ap_if = network.WLAN(network.AP_IF)
@@ -60,6 +60,7 @@ else:
     disable_sta()
 
 if 'webrepl_pw' in config:
+    import webrepl
     webrepl.start(password=config['webrepl_pw'])
 
 gc.collect()
