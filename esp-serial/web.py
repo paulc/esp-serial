@@ -7,12 +7,16 @@ app = Microdot()
 htmldoc = '''<!DOCTYPE html>
 <html>
     <head>
-        <title>Microdot Example Page</title>
+        <link rel="stylesheet" href="/static/normalize.css">
+        <link rel="stylesheet" href="/static/skeleton.css">
+        <script src="/static/htmx.min.js"></script>
+        <title>ESP8266 Example Page</title>
     </head>
     <body>
         <div>
-            <h1>Microdot Example Page</h1>
-            <p>Hello from Microdot!</p>
+            <h1>ESP8266 Example Page</h1>
+            <p>Hello from ESP8266!</p>
+            <button hx-get="/square/99">Button</button>
         </div>
     </body>
 </html>
@@ -36,9 +40,11 @@ def static(request,name):
         content_type = Response.types_map.get(name.split('.')[-1],'application/octet-stream')
         response = send_file('/static/{}.gz'.format(name),content_type=content_type)
         response.headers['Content-Encoding'] = 'gzip'
+        response.headers['Cache-Control'] = 'max-age=86400'
     except OSError:
         try:
             response = send_file('/static/{}'.format(name))
+            response.headers['Cache-Control'] = 'max-age=86400'
         except OSError:
             response = Response(body='Not Found\n',status_code=404)
     return response
